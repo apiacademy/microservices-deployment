@@ -1,0 +1,41 @@
+### AWS Settings
+aws_profile: irakli-aws # name of the AWS profile to use from ~/.aws/credentials
+key_name: ssh/private-key.pem
+aws_instance_type: m3.medium
+aws_image: ami-d05e75b8 # Ubuntu Server 14.04 LTS (HVM), SSD Volume Type
+aws_region: us-east-1
+aws_security_group_consul: micro_demo_secgroup_consul
+aws_ssh_key_name: micro_demo_ssh_keys
+
+# Feel free to edit "exact_count" numbers but editing anything else here may require
+# corresponding changes in the code, which is not advisable. This is not a config file, per se.
+
+server_clusters: 
+  - class: consul_servers
+    zone: "us-east-1d"
+    exact_count: 3
+    tags:
+      class: consul_servers
+  - class: gateway_servers
+    zone: "us-east-1d"
+    exact_count: 3
+    tags:
+      class: gateway_servers
+  - class: services_servers
+    zone: "us-east-1d"
+    exact_count: 3
+    tags:
+      class: services_servers
+
+#  - { class: 'gateway_servers', exact_count: 3, dict: { 'class' : 'gateways' } }
+#  - { class: 'docker_servers', exact_count: 3, dict: { 'class' : 'dockers' } }
+
+consul_servers: 
+  # If you have public/private IPs (e.g. at EC2) you may want these to be 
+  # the private IPs, but public ones may work too (depending on Firewall rules).
+ # - 10.153.199.11
+  #- 10.136.78.122
+  #- 10.146.235.71
+
+ansible_ssh_private_key_file: ssh/private-key.pem
+ansible_ssh_user: ubuntu
