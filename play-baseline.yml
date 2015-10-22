@@ -1,0 +1,9 @@
+---
+
+- hosts:
+    - tag_class_gateway_servers
+    - tag_class_consul_servers
+    - tag_class_services_servers    
+  sudo: yes
+  roles:
+    - common_baseline
