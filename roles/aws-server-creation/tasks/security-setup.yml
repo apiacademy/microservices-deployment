@@ -1,0 +1,93 @@
+---
+
+- name: example ec2 group
+  ec2_group:
+    profile: "{{ aws_profile }}"
+    name: "{{ aws_security_group_consul }}"
+    description: security group for Consul servers
+    purge_rules: true
+    region: "{{ aws_region }}"
+    rules:
+      - proto: tcp
+        from_port: 80
+        to_port: 80
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 443
+        to_port: 443
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 53
+        to_port: 53
+        cidr_ip: 0.0.0.0/0
+
+      - proto: tcp
+        from_port: 3000
+        to_port: 3000
+        group_name: "{{ aws_security_group_consul }}"
+      - proto: tcp
+        from_port: 5000
+        to_port: 5000
+        group_name: "{{ aws_security_group_consul }}"
+      - proto: tcp
+        from_port: 8300
+        to_port: 8300
+        group_name: "{{ aws_security_group_consul }}"
+      - proto: tcp
+        from_port: 8301
+        to_port: 8301
+        group_name: "{{ aws_security_group_consul }}"
+      - proto: tcp
+        from_port: 8302
+        to_port: 8302
+        group_name: "{{ aws_security_group_consul }}"
+      - proto: tcp
+        from_port: 8400
+        to_port: 8400
+        group_name: "{{ aws_security_group_consul }}"
+      - proto: tcp
+        from_port: 8500
+        to_port: 8500
+        group_name: "{{ aws_security_group_consul }}"
+      - proto: tcp
+        from_port: 8600
+        to_port: 8600
+        group_name: "{{ aws_security_group_consul }}"
+
+      - proto: udp
+        from_port: 53
+        to_port: 53
+        group_name: "{{ aws_security_group_consul }}"        
+      - proto: udp
+        from_port: 8301
+        to_port: 8301
+        group_name: "{{ aws_security_group_consul }}"
+      - proto: udp
+        from_port: 8302
+        to_port: 8302
+        group_name: "{{ aws_security_group_consul }}"  
+      - proto: udp
+        from_port: 8600
+        to_port: 8600
+        group_name: "{{ aws_security_group_consul }}"
+
+# see: http://docs.ansible.com/ansible/playbooks_lookups.html#more-lookups
+#- name: Setup security key (SSH key)
+#  ec2_key:
+#    name:"{{ aws_ssh_key_name }}"
+#    key_material:"{{ lookup('file', './ssh/public-key.pem') }}"
+#    state: present
+
+- name: Setup security key (SSH key)
+  ec2_key:
+    profile: "{{ aws_profile }}"
+    region: "{{ aws_region }}"
+    name: "{{ aws_ssh_key_name }}"
+    key_material: "{{ item }}"
+  with_file: "ssh/public-key.pem"
+
+
