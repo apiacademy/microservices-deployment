@@ -36,11 +36,13 @@ Demo of Automated Microservices Infrastructure Setup using Ansible, Docker, Cons
     chmod 700 ssh
     chmod 600 ssh/*    
     ```
-1. If you have some EC2 servers tagged with [key=Name, value=cademoconsuls], and the AWS credentials profile you are using is still `irakli-aws, then you can ping the tagged servers from Ansible with a command like:
+1. If you have some EC2 servers tagged with [key=Name, value=cademo_consuls], and the AWS credentials profile you are using is still `irakli-aws, then you can ping the tagged servers from Ansible with a command like:
 
     ```
-    AWS_PROFILE=irakli-aws ansible -i ec2.py tag_name_cademoconsuls -m ping    
+    AWS_PROFILE=irakli-aws ansible -i ec2.py tag_name_cademo_consuls -m ping    
     ```
+    
+    You can find more information about ec2 script and using dynamic EC2 inventories at: <https://aws.amazon.com/blogs/apn/getting-started-with-ansible-and-dynamic-amazon-ec2-inventory-management/>
 
 1. Spin-up some Ubuntu servers on AWS (or any other hosting)
 1. Edit the IPs of the servrs in the provided `hosts` file (present at the 
@@ -63,10 +65,12 @@ same level as this README). Please make sure to indicate **public** IPs.
        chmod 700 ssh
        chmod 600 ssh/*
        ```
-1. You are probably going to need following ports open (based on 
-   <https://www.consul.io/docs/agent/options.html> customize as you see fit):
-    ![](http://media.froyo.io/image/402Y3I2o393G/Configuration_-_Consul_by_HashiCorp.png)
-1. If you need to copy security group configuration across AWS regions, this script is a life-saver: https://github.com/pedropregueiro/migrate-ec2-secgroups    
+       
+1. You can create security group with:
+    
+    ```
+    
+    ```
 
 ## Quickstart
 
