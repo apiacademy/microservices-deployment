@@ -15,7 +15,7 @@
      #assign_public_ip: yes
      instance_tags: "{{ item.tags }}"
      exact_count: "{{ item.exact_count }}"
-     count_tag: "{{ item.class }}"
+     count_tag: "{{ item.tags }}"
      zone: "{{ item.zone }}"
   register: ec2_consul_cluster
   with_items: server_clusters
