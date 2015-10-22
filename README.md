@@ -15,6 +15,32 @@ Demo of Automated Microservices Infrastructure Setup using Ansible, Docker, Cons
        ```
     
     2. Configuration: https://boto3.readthedocs.org/en/latest/guide/quickstart.html#configuration
+3. Clone this repo with: 
+
+    ```console
+    git clone https://github.com/apiacademy/microservices-deployment.git
+    ```
+4. Go into the cloned repo and run the included [ec2 script](http://docs.ansible.com/ansible/intro_dynamic_inventory.html#example-aws-ec2-external-inventory-script), to make sure you properly installed and configured Boto:
+
+    ```console
+    ./ec2.py --list --boto-profile irakli-aws
+    ```
+    
+    Make sure to replace `irakli-aws` with your AWS profile name from `~/.aws/credentials`. You can omit the option if you are using default profile.
+
+1. Save a private SSH key that you use/will use the root user on your AWS servers under: `ssh/private-key.pem`. For security reasons, `ssh` folder is .gitignore-d in the demo repo, and you should ignore it, as well, if you build on top of the demo. NEVER check-in SSH keys into repos!
+
+1. Make sure your private key permissions are valid:
+
+    ```consul
+    chmod 700 ssh
+    chmod 600 ssh/*    
+    ```
+1. If you have some EC2 servers tagged with [key=Name, value=cademoconsuls], and the AWS credentials profile you are using is still `irakli-aws, then you can ping the tagged servers from Ansible with a command like:
+
+    ```
+    AWS_PROFILE=irakli-aws ansible -i ec2.py tag_name_cademoconsuls -m ping    
+    ```
 
 1. Spin-up some Ubuntu servers on AWS (or any other hosting)
 1. Edit the IPs of the servrs in the provided `hosts` file (present at the 
