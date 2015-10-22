@@ -30,6 +30,8 @@ Demo of Automated Microservices Infrastructure Setup using Ansible, Docker, Cons
 
 1. Save a private SSH key that you use/will use the root user on your AWS servers under: `ssh/private-key.pem`. For security reasons, `ssh` folder is .gitignore-d in the demo repo, and you should ignore it, as well, if you build on top of the demo. NEVER check-in SSH keys into repos!
 
+    **ATTENTION:** corresponding public key must be placed under `roles/aws-server-creation/ssh/public-key.pem`!!!
+
 1. Make sure your private key permissions are valid:
 
     ```consul
@@ -44,34 +46,12 @@ Demo of Automated Microservices Infrastructure Setup using Ansible, Docker, Cons
     
     You can find more information about ec2 script and using dynamic EC2 inventories at: <https://aws.amazon.com/blogs/apn/getting-started-with-ansible-and-dynamic-amazon-ec2-inventory-management/>
 
-1. Spin-up some Ubuntu servers on AWS (or any other hosting)
-1. Edit the IPs of the servrs in the provided `hosts` file (present at the 
-same level as this README). Please make sure to indicate **public** IPs.
-1. Make sure to also edit `group_vars/all.yml` and enter the IP(s) of all servers
-   that you allocated as consul servers. The entries in hosts and group_vars.all.yml
-   must correspond to each other!
-1. While you are in `group_vars/all.yml` you may also want to change the `shell_user`
-   variable. By default it is set to "ubuntu" because that's what AWS wants to log
-   into your Ubuntu servers in as, but another user may make sense to you.
-1. In AWS EC2, the root username for Ubuntu servers is called: `ubuntu`. If you 
-   spin your servers up somewhere where that is not the case, edit 
-   `group_vars/all.yml` and modify the value of the `ansible_ssh_user: ubuntu` variable.
-1. Create `ssh` folder under this checkout (same level as README)
-1. Save a private SSH key that corresponds to the root user on all your new servers
-   under: `ssh/private-key.pem`
-1. Make sure your private key permissions are valid:
-       
-       ```consul
-       chmod 700 ssh
-       chmod 600 ssh/*
-       ```
-       
-1. You can create security group with:
-    
-    ```
-    
-    ```
+1. Please make sure you set up proper AWS Profile in `group_vars/all.yml` under `aws_profile` variabe and then you can create required servers as easily as running:
 
+```
+ansible-playbook play-00-create-servers.yml -i hosts
+```
+       
 ## Quickstart
 
 To make sure your ssh and hosts setup is correct and you can login to all 
