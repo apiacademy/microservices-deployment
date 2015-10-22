@@ -2,4 +2,4 @@
 
 - hosts: local
   roles:
-    - aws-security-groups    
+    - aws-server-creation
