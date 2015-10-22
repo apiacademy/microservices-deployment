@@ -1,12 +1,13 @@
 ---
 
-- name: example ec2 group
+- name: Consul Security Group (Irakli)
   ec2_group:
     profile: "{{ aws_profile }}"
-    name: "{{ aws_security_group_consul }}"
+    name: "10.0.0.0/16"
     description: security group for Consul servers
     purge_rules: true
     region: "{{ aws_region }}"
+    vpc_id: "{{ vpc_settings['vpc_id'] }}"
     rules:
       - proto: tcp
         from_port: 80
@@ -28,52 +29,52 @@
       - proto: tcp
         from_port: 3000
         to_port: 3000
-        group_name: "{{ aws_security_group_consul }}"
+        group_name: "10.0.0.0/16"
       - proto: tcp
         from_port: 5000
         to_port: 5000
-        group_name: "{{ aws_security_group_consul }}"
+        group_name: "10.0.0.0/16"
       - proto: tcp
         from_port: 8300
         to_port: 8300
-        group_name: "{{ aws_security_group_consul }}"
+        group_name: "10.0.0.0/16"
       - proto: tcp
         from_port: 8301
         to_port: 8301
-        group_name: "{{ aws_security_group_consul }}"
+        group_name: "10.0.0.0/16"
       - proto: tcp
         from_port: 8302
         to_port: 8302
-        group_name: "{{ aws_security_group_consul }}"
+        group_name: "10.0.0.0/16"
       - proto: tcp
         from_port: 8400
         to_port: 8400
-        group_name: "{{ aws_security_group_consul }}"
+        group_name: "10.0.0.0/16"
       - proto: tcp
         from_port: 8500
         to_port: 8500
-        group_name: "{{ aws_security_group_consul }}"
+        group_name: "10.0.0.0/16"
       - proto: tcp
         from_port: 8600
         to_port: 8600
-        group_name: "{{ aws_security_group_consul }}"
+        group_name: "10.0.0.0/16"
 
       - proto: udp
         from_port: 53
         to_port: 53
-        group_name: "{{ aws_security_group_consul }}"        
+        group_name: "10.0.0.0/16"        
       - proto: udp
         from_port: 8301
         to_port: 8301
-        group_name: "{{ aws_security_group_consul }}"
+        group_name: "10.0.0.0/16"
       - proto: udp
         from_port: 8302
         to_port: 8302
-        group_name: "{{ aws_security_group_consul }}"  
+        group_name: "10.0.0.0/16"  
       - proto: udp
         from_port: 8600
         to_port: 8600
-        group_name: "{{ aws_security_group_consul }}"
+        group_name: "10.0.0.0/16"
 
 # see: http://docs.ansible.com/ansible/playbooks_lookups.html#more-lookups
 #- name: Setup security key (SSH key)

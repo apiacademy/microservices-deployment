@@ -1,0 +1,14 @@
+---
+
+# see: http://docs.ansible.com/ansible/ec2_vpc_net_module.html
+
+- ec2_vpc:
+  #local_action:
+   profile: "{{ aws_profile }}"
+   region: "{{ aws_region }}"
+   state: present
+   cidr_block: "10.0.0.0/16"
+   wait: yes
+   wait_timeout: 300
+   resource_tags: { Name: cademovpc}
+  register: vpc_settings

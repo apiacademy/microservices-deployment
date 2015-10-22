@@ -64,7 +64,7 @@ ansible all -m ping -i hosts
 To install basic Linux tools (curl, vim etc.) on all servers:
 
 ```console
-ansible-playbook basics.yml -i hosts
+AWS_PROFILE=irakli-aws ansible-playbook -i ec2.py play-baseline.yml
 ```
 
 To install consul server and clients:

@@ -1,28 +1,29 @@
 ### AWS Settings
-aws_profile: irakli-aws # name of the AWS profile to use from ~/.aws/credentials
+
+# name of the AWS profile to use from ~/.aws/credentials
+aws_profile: "ca-irakli-aws"
+
 key_name: ssh/private-key.pem
 aws_instance_type: m3.medium
 aws_image: ami-d05e75b8 # Ubuntu Server 14.04 LTS (HVM), SSD Volume Type
-aws_region: us-east-1
 aws_security_group_consul: micro_demo_secgroup_consul
 aws_ssh_key_name: micro_demo_ssh_keys
+aws_region: us-east-1
+aws_az: "us-east-1b"
 
 # Feel free to edit "exact_count" numbers but editing anything else here may require
 # corresponding changes in the code, which is not advisable. This is not a config file, per se.
 
 server_clusters: 
-  - class: consul_servers
-    zone: "us-east-1d"
+  - zone: "{{ aws_az }}"
     exact_count: 3
     tags:
       class: consul_servers
-  - class: gateway_servers
-    zone: "us-east-1d"
+  - zone: "{{ aws_az }}"
     exact_count: 3
     tags:
       class: gateway_servers
-  - class: services_servers
-    zone: "us-east-1d"
+  - zone: "{{ aws_az }}"
     exact_count: 3
     tags:
       class: services_servers
