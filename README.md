@@ -44,7 +44,7 @@ Demo of Automated Microservices Infrastructure Setup using Ansible, Docker, Cons
 1. If you have some EC2 servers tagged with [key=Name, value=cademo_consuls], and the AWS credentials profile you are using is still `irakli-aws, then you can ping the tagged servers from Ansible with a command like:
 
     ```
-    AWS_PROFILE=irakli-aws ansible -i ec2.py tag_name_cademo_consuls -m ping    
+    AWS_PROFILE=irakli-aws ansible -i ec2.py tag_Name_cademo_consuls -m ping    
     ```
     
     You can find more information about ec2 script and using dynamic EC2 inventories at: <https://aws.amazon.com/blogs/apn/getting-started-with-ansible-and-dynamic-amazon-ec2-inventory-management/>
