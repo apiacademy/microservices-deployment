@@ -3,12 +3,30 @@
 # see: http://docs.ansible.com/ansible/ec2_vpc_net_module.html
 
 - ec2_vpc:
-  #local_action:
    profile: "{{ aws_profile }}"
    region: "{{ aws_region }}"
    state: present
    cidr_block: "10.0.0.0/16"
    wait: yes
    wait_timeout: 300
-   resource_tags: { Name: cademovpc}
+   resource_tags: { Name: "MSA Demo"}
+   subnets:
+     - cidr: "10.0.1.0/24"
+       az: "{{aws_az}}"
+       resource_tags: { "Name":"MSADemoWeb", "Tier" : "MSA Web" }
+     - cidr: "10.0.2.0/24"
+       az: "{{aws_az}}"
+       resource_tags: { "Name":"MSADemoConsul", "Tier" : "MSA Consul" }
+     - cidr: "10.0.3.0/24"
+       az: "{{aws_az}}"
+       resource_tags: { "Name":"MSADemoDB", "Tier" : "MSA DB" }
+   internet_gateway: True
+   route_tables:
+     - subnets:
+         - "10.0.1.0/24"
+         - "10.0.2.0/24"
+         - "10.0.3.0/24"
+       routes:
+         - dest: "0.0.0.0/32"
+           gw: igw
   register: vpc_settings
