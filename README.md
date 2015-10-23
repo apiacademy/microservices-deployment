@@ -6,7 +6,7 @@ Demo of Automated Microservices Infrastructure Setup using Ansible, Docker, Cons
 
 1. Install Ansible
 2. Install and configure Boto:
-    1. Installation: https://boto3.readthedocs.org/en/latest/guide/quickstart.html#installation
+    1. Installation: http://boto.readthedocs.org/en/latest/getting_started.html
     
        On OS-X El Capitan, you will have to ignore `six` that is pre-installed and causes issues:
     
@@ -14,7 +14,8 @@ Demo of Automated Microservices Infrastructure Setup using Ansible, Docker, Cons
        sudo -H pip install --ignore-installed boto
        ```
     
-    2. Configuration: https://boto3.readthedocs.org/en/latest/guide/quickstart.html#configuration
+    2. Configuration of Boto/AWS credentials: http://boto.readthedocs.org/en/latest/getting_started.html#configuring-boto-credentials
+    
 3. Clone this repo with: 
 
     ```console
