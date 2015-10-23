@@ -1,0 +1,17 @@
+#############################################################################
+##
+## ATTENTION: typically all IPs here must be public IPs of your servers.
+##
+#############################################################################
+
+[local]
+127.0.0.1 ansible_connection=local
+
+#[consulservers]
+#54.163.97.231 consul_host=consul1
+#54.166.92.45 consul_host=consul2
+#54.158.180.91  consul_host=consul3
+
+#[webheads]
+#23.22.28.177 consul_host=web1
+#54.147.228.231 consul_host=web2
