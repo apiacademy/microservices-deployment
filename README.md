@@ -11,7 +11,7 @@ Demo of Automated Microservices Infrastructure Setup using Ansible, Docker, Cons
        On OS-X El Capitan, you will have to ignore `six` that is pre-installed and causes issues:
     
        ```console
-       sudo -H pip install --ignore-installed boto3
+       sudo -H pip install --ignore-installed boto
        ```
     
     2. Configuration: https://boto3.readthedocs.org/en/latest/guide/quickstart.html#configuration
