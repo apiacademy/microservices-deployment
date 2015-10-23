@@ -16,7 +16,7 @@ Demo of Automated Microservices Infrastructure Setup using Ansible, Docker, Cons
     
     2. Configuration of Boto/AWS credentials: http://boto.readthedocs.org/en/latest/getting_started.html#configuring-boto-credentials
     
-    3. Please note that there's currently a bug in epc_vpc which ignores profile parameter and uses default credentials, so you need to make sure that your **default** AWS credentials point to the environment where you need things created. 
+    3. Please note that there's currently a [major bug](https://github.com/ansible/ansible/issues/12883) in Ansible/`epc_vpc` which ignores profile parameter and uses default credentials, so you need to make sure that your **default** AWS credentials point to the environment where you need things created. 
     
 3. Clone this repo with: 
 
