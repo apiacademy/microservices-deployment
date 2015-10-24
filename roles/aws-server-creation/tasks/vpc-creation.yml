@@ -9,17 +9,18 @@
    cidr_block: "10.0.0.0/16"
    wait: yes
    wait_timeout: 300
-   resource_tags: { Name: "MSA Demo"}
+   resource_tags:
+     "Name": "{{ project_name }} VPC"
    subnets:
      - cidr: "10.0.1.0/24"
        az: "{{aws_az}}"
-       resource_tags: { "Name":"MSADemoWeb", "Tier" : "MSA Web" }
+       resource_tags: { "Tier": "web", "Name" : "{{ project_name }} Web", "uid" : "{{ project_key }}_web" }
      - cidr: "10.0.2.0/24"
        az: "{{aws_az}}"
-       resource_tags: { "Name":"MSADemoConsul", "Tier" : "MSA Consul" }
+       resource_tags: { "Tier":"consul", "Name" : "{{ project_name }} Consul", "uid" : "{{ project_key }}_consul" }
      - cidr: "10.0.3.0/24"
        az: "{{aws_az}}"
-       resource_tags: { "Name":"MSADemoDB", "Tier" : "MSA DB" }
+       resource_tags: { "Tier":"database", "Name" : "{{ project_name }} DB", "uid" : "{{ project_key }}_db" }
    internet_gateway: True
    route_tables:
      - subnets:

@@ -8,25 +8,25 @@
   ec2:
      profile: "{{ aws_profile }}"
      key_name: "{{ aws_ssh_key_name }}"
-     group: "{{ aws_security_group_consul }}"
+     group: "{{ item[0].groups }}"
      instance_type: "{{ aws_instance_type }}"
      image: "{{ aws_image }}"
      wait: true
      region: "{{ aws_region }}"
      vpc_subnet_id: "{{item[1]['id']}}"
-     #assign_public_ip: yes
+     assign_public_ip: "{{item[0].assign_public_ip}}"
      instance_tags: "{{ item[0].tags }}"
      exact_count: "{{ item[0].exact_count }}"
      count_tag: "{{ item[0].tags }}"
      zone: "{{ item[0].zone }}"
-  when: item[0]['tags']['subnet_tag'] == item[1]['resource_tags']['Tier']
+  when: item[0]['tags']['subnet_tag'] == item[1]['resource_tags']['uid']
   with_nested:
     - "{{server_clusters}}"
     - "{{ vpc_settings['subnets'] }}"
-  register: ec2_consul_cluster
+  register: ec2_consul_cluster['vpc_subnet_id']
 
-- name: created clusters
-  debug: var=ec2_consul_cluster
+#- name: created clusters
+#  debug: var="{{ec2_consul_cluster}}"
 
 #- name: Add new instance to host group
 #  add_host: hostname={{ item.public_ip }} groupname=launched

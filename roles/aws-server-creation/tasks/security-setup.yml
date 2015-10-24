@@ -1,10 +1,10 @@
 ---
 
-- name: Consul Security Group (Irakli)
+- name: "{{ project_name }} Web Security Group"
   ec2_group:
     profile: "{{ aws_profile }}"
-    name: "10.0.0.0/16"
-    description: security group for Consul servers
+    name: "{{ aws_security_group_web }}"
+    description: "security group for web servers"
     purge_rules: true
     region: "{{ aws_region }}"
     vpc_id: "{{ vpc_settings['vpc_id'] }}"
@@ -12,20 +12,29 @@
       - proto: tcp
         from_port: 80
         to_port: 80
-        cidr_ip: 0.0.0.0/0
+        cidr_ip: "0.0.0.0/0"
       - proto: tcp
         from_port: 22
         to_port: 22
-        cidr_ip: 0.0.0.0/0
+        cidr_ip: "0.0.0.0/0"
       - proto: tcp
         from_port: 443
         to_port: 443
-        cidr_ip: 0.0.0.0/0
+        cidr_ip: "0.0.0.0/0"
       - proto: tcp
         from_port: 53
         to_port: 53
-        cidr_ip: 0.0.0.0/0
+        cidr_ip: "0.0.0.0/0"
 
+- name: "{{ project_name }} Consul Security Group"
+  ec2_group:
+    profile: "{{ aws_profile }}"
+    name: "{{ aws_security_group_consul }}"
+    description: "security group for Consul servers"
+    purge_rules: true
+    region: "{{ aws_region }}"
+    vpc_id: "{{ vpc_settings['vpc_id'] }}"
+    rules:
       - proto: tcp
         from_port: 3000
         to_port: 3000
@@ -62,7 +71,7 @@
       - proto: udp
         from_port: 53
         to_port: 53
-        cidr_ip: "10.0.0.0/16"        
+        cidr_ip: "10.0.0.0/16"
       - proto: udp
         from_port: 8301
         to_port: 8301
@@ -70,7 +79,7 @@
       - proto: udp
         from_port: 8302
         to_port: 8302
-        cidr_ip: "10.0.0.0/16"  
+        cidr_ip: "10.0.0.0/16"
       - proto: udp
         from_port: 8600
         to_port: 8600
