@@ -2,6 +2,8 @@
 
 # http://docs.ansible.com/ansible/ec2_module.html#requirements
 
+# @TODO: need to properly register ec2_consul_cluster!
+
 - name: Launch Server Clusters
   ec2:
      profile: "{{ aws_profile }}"
