@@ -30,3 +30,18 @@
          - dest: "0.0.0.0/32"
            gw: igw
   register: vpc_settings
+
+# - debug: var=vpc_settings
+
+#- set_fact:
+#     subnets: "{{vpc_settings['subnets']}}"
+#     other_fact: "{{ local_var * 2 }}"
+#     another_fact: "{{ some_registered_
+
+# Mater class: match subnets to clusters. Woohoo
+#- name: Launch Server Clusters
+#  debug: msg="  {{item[0]['tags']['subnet_tag']}} - {{item[1]['resource_tags']['Tier']}} "
+#  when: item[0]['tags']['subnet_tag'] == item[1]['resource_tags']['Tier']
+#  with_nested:
+#    - "{{server_clusters}}"
+#    - "{{ vpc_settings['subnets'] }}"

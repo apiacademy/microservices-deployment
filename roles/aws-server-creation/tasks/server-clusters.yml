@@ -11,14 +11,20 @@
      image: "{{ aws_image }}"
      wait: true
      region: "{{ aws_region }}"
-     #vpc_subnet_id: subnet-29e63245
+     vpc_subnet_id: "{{item[1]['id']}}"
      #assign_public_ip: yes
-     instance_tags: "{{ item.tags }}"
-     exact_count: "{{ item.exact_count }}"
-     count_tag: "{{ item.tags }}"
-     zone: "{{ item.zone }}"
+     instance_tags: "{{ item[0].tags }}"
+     exact_count: "{{ item[0].exact_count }}"
+     count_tag: "{{ item[0].tags }}"
+     zone: "{{ item[0].zone }}"
+  when: item[0]['tags']['subnet_tag'] == item[1]['resource_tags']['Tier']
+  with_nested:
+    - "{{server_clusters}}"
+    - "{{ vpc_settings['subnets'] }}"
   register: ec2_consul_cluster
-  with_items: server_clusters
+
+- name: created clusters
+  debug: var=ec2_consul_cluster
 
 #- name: Add new instance to host group
 #  add_host: hostname={{ item.public_ip }} groupname=launched

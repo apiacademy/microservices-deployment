@@ -19,14 +19,17 @@ server_clusters:
     exact_count: 3
     tags:
       class: consul_servers
+      subnet_tag: "MSA Consul"
   - zone: "{{ aws_az }}"
     exact_count: 3
     tags:
       class: gateway_servers
+      subnet_tag: "MSA Web"
   - zone: "{{ aws_az }}"
     exact_count: 3
     tags:
       class: services_servers
+      subnet_tag: "MSA Web"
 
 #  - { class: 'gateway_servers', exact_count: 3, dict: { 'class' : 'gateways' } }
 #  - { class: 'docker_servers', exact_count: 3, dict: { 'class' : 'dockers' } }
