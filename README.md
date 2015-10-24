@@ -29,7 +29,9 @@ Demo of Automated Microservices Infrastructure Setup using Ansible, Docker, Cons
     ./ec2.py --list --boto-profile irakli-aws
     ```
     
-    Make sure to replace `irakli-aws` with your AWS profile name from `~/.aws/credentials`. You can omit the option if you are using default profile.
+    Make sure to replace `irakli-aws` with your AWS profile name from `~/.aws/credentials`. You can omit the option if you are using default profile from that file.
+    
+    Please also note that in the version of ec2.ini file we ship, for the sake of speed, we restrict the AWS regions the script works with to North America ones. If you need access to any other zone, or all zones: please edit the ec2.ini file accordingly.
 
 1. Save a private SSH key that you use/will use the root user on your AWS servers under: `ssh/private-key.pem`. For security reasons, `ssh` folder is .gitignore-d in the demo repo, and you should ignore it, as well, if you build on top of the demo. NEVER check-in SSH keys into repos!
 
