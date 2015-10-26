@@ -26,7 +26,7 @@ Demo of Automated Microservices Infrastructure Setup using Ansible, Docker, Cons
 4. Go into the cloned repo and run the included [ec2 script](http://docs.ansible.com/ansible/intro_dynamic_inventory.html#example-aws-ec2-external-inventory-script), to make sure you properly installed and configured Boto:
 
     ```console
-    ./ec2.py --list --boto-profile irakli-aws
+    cd inventory && ./ec2.py --list --boto-profile irakli-aws && cd --
     ```
     
     Make sure to replace `irakli-aws` with your AWS profile name from `~/.aws/credentials`. You can omit the option if you are using default profile from that file.
