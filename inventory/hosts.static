@@ -1,0 +1,4 @@
+[localhost]
+127.0.0.1 ansible_connection=local
+
+# https://github.com/arbabnazar/ansible-openvpn-aws-vpc
