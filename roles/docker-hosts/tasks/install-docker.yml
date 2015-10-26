@@ -1,0 +1,97 @@
+---
+
+  # @see: https://docs.docker.com/installation/ubuntulinux/
+
+  # This has bug, right now: https://github.com/ansible/ansible-modules-core/issues/2356
+  #
+  # - name: Add Docker repository key
+  #   apt_key:
+  #     id: "58118E89F3A912897C070ADBF76221572C52609D"
+  #     url: "hkp://pgp.mit.edu:80"
+  #     state: present
+
+  - name: "Add Docker Repository Key"
+    shell: "sudo apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D"
+
+  - name: Add Docker repository and update apt cache
+    apt_repository:
+      repo: "deb https://apt.dockerproject.org/repo ubuntu-trusty main"
+      update_cache: yes
+      state: present
+
+  # - name: "Update APT cache"
+  #   apt: update_cache=yes
+  #
+  # - name: Add Docker repository key
+  #   apt_key:
+  #     id: "A88D21E9"
+  #     url: "http://get.docker.io/gpg"
+  #     state: present
+  #
+  # - name: Add Docker repository and update apt cache
+  #   apt_repository:
+  #     repo: "deb https://get.docker.com/ubuntu docker main"
+  #     update_cache: yes
+  #     state: present
+
+  - name: Install (or update) docker package
+    apt:
+      name: "docker-engine"
+      state: latest
+      update_cache: yes
+      cache_valid_time: 600
+      
+  - name: Install pip
+    apt: name="python-pip" state="present"
+    
+  - name: Set docker daemon options to switch from devicemapper to overlayfs. Devicemapper is flaaaakyyyy
+    copy:
+      content: "DOCKER_OPTS=\"-g /data/docker -s overlay\""
+      dest: /etc/default/docker
+      owner: root
+      group: root
+      mode: 0644
+  
+  - name: Upgrade version of pip
+    shell: easy_install -U pip
+    
+  - name: Install docker python library
+    shell: pip install docker-py
+    #ignore_errors: true # docker-py installation is not quite idempotent.
+  
+  - name: "Add docker group"
+    group: name=docker state=present
+  
+  - name: Add default \"ubuntu\" user (for AWS) docker group
+    shell: "usermod -aG docker ubuntu"
+  
+  - name: Check if /etc/updatedb.conf exists
+    stat:
+      path: /etc/updatedb.conf
+    register: updatedb_conf_exists
+  
+  - name: Ensure updatedb does not index /var/lib/docker
+    lineinfile:
+      dest: /etc/updatedb.conf
+      state: present
+      backrefs: yes
+      regexp: '^PRUNEPATHS="(/var/lib/docker )?(.*)"$'
+      line: 'PRUNEPATHS="/var/lib/docker \2"'
+    when: updatedb_conf_exists.stat.exists  
+  
+  - name: Check if /etc/default/ufw exists
+    stat:
+      path: /etc/default/ufw
+    register: ufw_default_exists
+  
+  - name: Change ufw default forward policy from drop to accept
+    lineinfile:
+      dest: /etc/default/ufw
+      regexp: "^DEFAULT_FORWARD_POLICY="
+      line: "DEFAULT_FORWARD_POLICY=\"ACCEPT\""
+    when: ufw_default_exists.stat.exists
+  
+  - name: Start docker-lxc
+    service:
+      name: docker
+      state: restarted

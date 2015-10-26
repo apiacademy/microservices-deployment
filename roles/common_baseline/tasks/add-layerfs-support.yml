@@ -1,0 +1,27 @@
+---
+  
+  - name: Find the latest available version of linux-image-extra
+    shell: "apt-cache search linux-image-extra | grep linux-image-extra-.*-generic | tail -1 | awk '{print $1;}'"
+    register: linux_image_extra
+    # the .stdout should be something like: linux-image-extra-3.19.0-23-generic
+    
+    
+  - name: Install dependencies and updates to enable overlayfs support
+    apt:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - "{{linux_image_extra.stdout}}"
+  
+  - name: Reboot servers to let overlayfs support kick-in.
+    command: /sbin/shutdown -r now
+    register: reboot_result
+  
+  - name: Wait for instance to come online (5 minute timeout)
+    sudo: false
+    local_action:
+      module: wait_for
+              host={{ inventory_hostname }}
+              port=22
+              delay=1
+              timeout=300    

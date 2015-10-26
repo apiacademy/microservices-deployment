@@ -1,0 +1,6 @@
+---
+
+  - name: Install Docker Hosts
+    include: "install-docker.yml"
+    tags: 
+      - docker

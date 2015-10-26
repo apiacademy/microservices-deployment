@@ -28,8 +28,10 @@
          - "10.0.2.0/24"
          - "10.0.3.0/24"
        routes:
-         - dest: "0.0.0.0/32"
+         - dest: "0.0.0.0/0"
            gw: igw
+       resource_tags:
+        "Name": "{{ project_name }} VPC"
   register: vpc_settings
 
 # - debug: var=vpc_settings
