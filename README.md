@@ -5,6 +5,11 @@ Demo of Automated Microservices Infrastructure Setup using Ansible, Docker, Cons
 ## Installation
 
 1. Install Ansible
+    1. On OS-X you can just run: `sudo -H pip install --ignore-installed ansible`
+    1. For other platforms consult with [Ansible installation notes](http://docs.ansible.com/ansible/intro_installation.html)
+1. Install jq (sed for JSON):
+    1. On OS-X you can just run: `brew install jq`
+    1. For other platforms consult with [jq installation notes](https://stedolan.github.io/jq/download/)
 2. Install and configure Boto:
     1. Installation: http://boto.readthedocs.org/en/latest/getting_started.html
     
