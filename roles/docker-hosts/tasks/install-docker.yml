@@ -19,21 +19,6 @@
       update_cache: yes
       state: present
 
-  # - name: "Update APT cache"
-  #   apt: update_cache=yes
-  #
-  # - name: Add Docker repository key
-  #   apt_key:
-  #     id: "A88D21E9"
-  #     url: "http://get.docker.io/gpg"
-  #     state: present
-  #
-  # - name: Add Docker repository and update apt cache
-  #   apt_repository:
-  #     repo: "deb https://get.docker.com/ubuntu docker main"
-  #     update_cache: yes
-  #     state: present
-
   - name: Install (or update) docker package
     apt:
       name: "docker-engine"
@@ -43,7 +28,7 @@
       
   - name: Install pip
     apt: name="python-pip" state="present"
-    
+
   - name: Set docker daemon options to switch from devicemapper to overlayfs. Devicemapper is flaaaakyyyy
     copy:
       content: "DOCKER_OPTS=\"-g /data/docker -s overlay\""
@@ -57,7 +42,6 @@
     
   - name: Install docker python library
     shell: pip install docker-py
-    #ignore_errors: true # docker-py installation is not quite idempotent.
   
   - name: "Add docker group"
     group: name=docker state=present
@@ -90,8 +74,11 @@
       regexp: "^DEFAULT_FORWARD_POLICY="
       line: "DEFAULT_FORWARD_POLICY=\"ACCEPT\""
     when: ufw_default_exists.stat.exists
-  
-  - name: Start docker-lxc
+
+  - name: Install Docker Compose
+    shell: "pip install -U docker-compose"
+
+  - name: Start docker-engine
     service:
       name: docker
       state: restarted
