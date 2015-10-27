@@ -15,7 +15,8 @@
      region: "{{ aws_region }}"
      vpc_subnet_id: "{{item[1]['id']}}"
      # assign_public_ip: "{{item[0].assign_public_ip}}"
-     # Trick: create all servers with public_ips so we can easily configure them. We will take public IPs away, later.
+     # Trick: create all servers with public_ips so we can easily configure them. We will take public
+     # IPs away, later using http://docs.ansible.com/ansible/ec2_eip_module.html
      assign_public_ip: True
      instance_tags: "{{ item[0].tags }}"
      exact_count: "{{ item[0].exact_count }}"
