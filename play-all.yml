@@ -1,0 +1,3 @@
+- include: "play-00-create-servers.yml"
+- include: "play-01-baseline.yml"
+- include: "play-02-dockerize.yml"
