@@ -25,6 +25,14 @@
     - "{{server_clusters}}"
     - "{{ vpc_settings['subnets'] }}"
 
+- name: Launch Server Clusters
+  debug: msg="item[0]['tags']['subnet_tag'] – item[1]['resource_tags']['uid']"
+  when: item[0]['tags']['subnet_tag'] == item[1]['resource_tags']['uid']
+  with_nested:
+    - "{{server_clusters}}"
+    - "{{ vpc_settings['subnets'] }}"
+
+
 #- name: created clusters
 #  debug: var="{{ec2_consul_cluster}}"
 
