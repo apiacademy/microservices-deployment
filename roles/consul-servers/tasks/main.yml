@@ -1,0 +1,37 @@
+---
+
+  #- debug:
+  #    msg: "{{ groups.tag_class_consul_servers | length }}"
+
+  - name: Launch Consul Server Containers
+    docker:
+      name: consul-server
+      image: "gliderlabs/consul-server"
+      command: "-advertise {{inventory_hostname}} -bootstrap-expect {{ groups.tag_class_consul_servers | length }}"
+      state: reloaded
+      restart_policy: "on-failure"
+      ports:
+        - 8300:8300
+        - 8301:8301
+        - 8301:8301/udp
+        - 8302:8302
+        - 8302:8302/udp
+        - 8400:8400
+        - 8500:8500
+        - 53:53/udp
+
+  - name: Launch Registrator Containers
+    docker:
+      name: docker-registrator
+      image: "gliderlabs/registrator"
+      command: "consul://{{ groups.tag_class_consul_servers | first }}:8500"
+      state: started
+      restart_policy: "on-failure"
+      volumes: "/var/run/docker.sock:/tmp/docker.sock"
+
+  - pause: seconds=5
+
+  - name: Make Consul servers join the cluster
+    shell: "docker exec consul-server consul join {{item}}"
+    with_items: groups.tag_class_consul_servers
+    when: item != "{{ groups.tag_class_consul_servers | first }}"
