@@ -15,6 +15,9 @@ aws_ssh_key_name: "{{ project_name }} SSH Keys"
 aws_region: "us-east-1"
 aws_az: "us-east-1b"
 
+# This needs to be hardened once we set up VPN
+aws_consul_security_cidr_ip: "0.0.0.0/0"
+#aws_consul_security_cidr_ip: "10.0.0.0/16"
 
 # Feel free to edit "exact_count" numbers but editing anything else here may require
 # corresponding changes in the code, which is not advisable. This is not a config file, per se.

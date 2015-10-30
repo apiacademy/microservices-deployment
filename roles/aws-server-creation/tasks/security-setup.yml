@@ -38,52 +38,52 @@
       - proto: tcp
         from_port: 3000
         to_port: 3000
-        cidr_ip: "10.0.0.0/16"
+        cidr_ip: "{{ aws_consul_security_cidr_ip }}"
       - proto: tcp
         from_port: 5000
         to_port: 5000
-        cidr_ip: "10.0.0.0/16"
+        cidr_ip: "{{ aws_consul_security_cidr_ip }}"
       - proto: tcp
         from_port: 8300
         to_port: 8300
-        cidr_ip: "10.0.0.0/16"
+        cidr_ip: "{{ aws_consul_security_cidr_ip }}"
       - proto: tcp
         from_port: 8301
         to_port: 8301
-        cidr_ip: "10.0.0.0/16"
+        cidr_ip: "{{ aws_consul_security_cidr_ip }}"
       - proto: tcp
         from_port: 8302
         to_port: 8302
-        cidr_ip: "10.0.0.0/16"
+        cidr_ip: "{{ aws_consul_security_cidr_ip }}"
       - proto: tcp
         from_port: 8400
         to_port: 8400
-        cidr_ip: "10.0.0.0/16"
+        cidr_ip: "{{ aws_consul_security_cidr_ip }}"
       - proto: tcp
         from_port: 8500
         to_port: 8500
-        cidr_ip: "10.0.0.0/16"
+        cidr_ip: "{{ aws_consul_security_cidr_ip }}"
       - proto: tcp
         from_port: 8600
         to_port: 8600
-        cidr_ip: "10.0.0.0/16"
+        cidr_ip: "{{ aws_consul_security_cidr_ip }}"
 
       - proto: udp
         from_port: 53
         to_port: 53
-        cidr_ip: "10.0.0.0/16"
+        cidr_ip: "{{ aws_consul_security_cidr_ip }}"
       - proto: udp
         from_port: 8301
         to_port: 8301
-        cidr_ip: "10.0.0.0/16"
+        cidr_ip: "{{ aws_consul_security_cidr_ip }}"
       - proto: udp
         from_port: 8302
         to_port: 8302
-        cidr_ip: "10.0.0.0/16"
+        cidr_ip: "{{ aws_consul_security_cidr_ip }}"
       - proto: udp
         from_port: 8600
         to_port: 8600
-        cidr_ip: "10.0.0.0/16"
+        cidr_ip: "{{ aws_consul_security_cidr_ip }}"
 
 # see: http://docs.ansible.com/ansible/playbooks_lookups.html#more-lookups
 #- name: Setup security key (SSH key)
