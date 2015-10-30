@@ -9,4 +9,4 @@
     - tag_class_services_servers
   sudo: yes
   roles:
-    - common_baseline
+    - common-baseline
