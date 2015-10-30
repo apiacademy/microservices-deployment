@@ -2,43 +2,92 @@
 
 # http://docs.ansible.com/ansible/ec2_module.html#requirements
 
-- name: Launch Server Clusters
-  ec2:
-     profile: "{{ aws_profile }}"
-     key_name: "{{ aws_ssh_key_name }}"
-     group: "{{ item[0].groups }}"
-     instance_type: "{{ aws_instance_type }}"
-     image: "{{ aws_image }}"
-     wait: true
-     region: "{{ aws_region }}"
-     vpc_subnet_id: "{{item[1]['id']}}"
-     # assign_public_ip: "{{item[0].assign_public_ip}}"
-     # Trick: create all servers with public_ips so we can easily configure them. We will take public
-     # IPs away, later using http://docs.ansible.com/ansible/ec2_eip_module.html
-     assign_public_ip: True
-     instance_tags: "{{ item[0].tags }}"
-     exact_count: "{{ item[0].exact_count }}"
-     count_tag: "{{ item[0].tags }}"
-     zone: "{{ item[0].zone }}"
-  when: item[0]['tags']['subnet_tag'] == item[1]['resource_tags']['uid']
-  with_nested:
-    - "{{server_clusters}}"
-    - "{{ vpc_settings['subnets'] }}"
+  - name: Launch Server Clusters
+    ec2:
+       profile: "{{ aws_profile }}"
+       key_name: "{{ aws_ssh_key_name }}"
+       group: "{{ item[0].groups }}"
+       instance_type: "{{ aws_instance_type }}"
+       image: "{{ aws_image }}"
+       wait: true
+       region: "{{ aws_region }}"
+       vpc_subnet_id: "{{item[1]['id']}}"
+       # assign_public_ip: "{{item[0].assign_public_ip}}"
+       # Trick: create all servers with public_ips so we can easily configure them. We will take public
+       # IPs away, later using http://docs.ansible.com/ansible/ec2_eip_module.html
+       assign_public_ip: True
+       instance_tags: "{{ item[0].tags }}"
+       exact_count: "{{ item[0].exact_count }}"
+       count_tag: "{{ item[0].tags }}"
+       zone: "{{ item[0].zone }}"
+    when: item[0]['tags']['subnet_tag'] == item[1]['resource_tags']['uid']
+    with_nested:
+      - "{{server_clusters}}"
+      - "{{ vpc_settings['subnets'] }}"
+    # register: serverzzzz
 
-- name: Launch Server Clusters
-  debug: msg="item[0]['tags']['subnet_tag'] – item[1]['resource_tags']['uid']"
-  when: item[0]['tags']['subnet_tag'] == item[1]['resource_tags']['uid']
-  with_nested:
-    - "{{server_clusters}}"
-    - "{{ vpc_settings['subnets'] }}"
+  # This is nuts, but unfortunately necessary. For whatever reason, tags property
+  # doesn't get set the first time servers are created, so we have to re-run this. Life!
+  #
+  # Thankfully we are idempotent and second iteration runs quickly, since servers
+  # already exist: we just check that they are there.
+  - name: Rescan Just-Created Server Clusters
+    ec2:
+       profile: "{{ aws_profile }}"
+       key_name: "{{ aws_ssh_key_name }}"
+       group: "{{ item[0].groups }}"
+       instance_type: "{{ aws_instance_type }}"
+       image: "{{ aws_image }}"
+       wait: true
+       region: "{{ aws_region }}"
+       vpc_subnet_id: "{{item[1]['id']}}"
+       # assign_public_ip: "{{item[0].assign_public_ip}}"
+       # Trick: create all servers with public_ips so we can easily configure them. We will take public
+       # IPs away, later using http://docs.ansible.com/ansible/ec2_eip_module.html
+       assign_public_ip: True
+       instance_tags: "{{ item[0].tags }}"
+       exact_count: "{{ item[0].exact_count }}"
+       count_tag: "{{ item[0].tags }}"
+       zone: "{{ item[0].zone }}"
+    when: item[0]['tags']['subnet_tag'] == item[1]['resource_tags']['uid']
+    with_nested:
+      - "{{server_clusters}}"
+      - "{{ vpc_settings['subnets'] }}"
+    register: serverzzzz
 
+  # - debug:‚
+  #     msg: "helllooooooo {{item[1]['public_ip']}} {{item[1]['tags']}}"
+  #   with_subelements:
+  #     - serverzzzz.results
+  #     - tagged_instances
 
-#- name: created clusters
-#  debug: var="{{ec2_consul_cluster}}"
+  - name: "Building Dynamic Inventory of just-created servers"
+    add_host: name={{item[1]['public_ip']}} groups="tag_class_{{item[1]['tags']['class']}},tag_cluster_msa_demo"
+    with_subelements:
+      - serverzzzz.results
+      - tagged_instances
 
-#- name: Add new instance to host group
-#  add_host: hostname={{ item.public_ip }} groupname=launched
-#  with_items: ec2.instances
+  - name: Wait for SSH to come up
+    wait_for: host={{ item }} port=22 delay=0 timeout=300 state=started
+    with_items: "{{groups.tag_cluster_msa_demo}}"
 
-#- debug: msg="opa {{ ec2_consul_cluster }}"
+  # - shell: "AWS_PROFILE='{{ aws_profile }}' ./inventory/ec2.py"
+  #   register: serverz
+  #
+  # - set_fact:
+  #    ec2_servers: "{{ serverz.stdout | from_json }}"
+  #
+  # - debug:
+  #     msg: "{{ ec2_servers['tag_cluster_msa_demo'] }}"
+  #
+  # - name: "Building Dynamic Inventory of just-created servers"
+  #   #add_host: name={{ ip_from_ec2 }} groups=just_created foo=42
+  #   when: item[0]['tags']['subnet_tag'] == item[1]['resource_tags']['uid']
+  #   with_nested:
+  #     - "{{ server_clusters }}"
+  #     - "{{ ec2_servers }}"
 
+  #-
+  #  - tag_class_gateway_servers
+  #  - tag_class_consul_servers
+  #  - tag_class_services_servers
