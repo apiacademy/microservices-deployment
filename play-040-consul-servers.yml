@@ -1,0 +1,10 @@
+---
+
+# We could also use tag_cluster_msa_demo which captures all servers, but
+# explicitely naming various server classes felt more expressive here.
+
+- hosts:
+    - tag_class_consul_servers
+  sudo: yes
+  roles:
+    - consul-servers
