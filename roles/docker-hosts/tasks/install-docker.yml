@@ -2,16 +2,10 @@
 
   # @see: https://docs.docker.com/installation/ubuntulinux/
 
-  # This has bug, right now: https://github.com/ansible/ansible-modules-core/issues/2356
-  #
-  # - name: Add Docker repository key
-  #   apt_key:
-  #     id: "58118E89F3A912897C070ADBF76221572C52609D"
-  #     url: "hkp://pgp.mit.edu:80"
-  #     state: present
-
-  - name: "Add Docker Repository Key"
-    shell: "sudo apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D"
+  - name: Add Docker Repository Key
+    apt_key:
+      keyserver: "hkp://pgp.mit.edu:80"
+      id: "58118E89F3A912897C070ADBF76221572C52609D"
 
   - name: Add Docker repository and update apt cache
     apt_repository:
@@ -29,7 +23,7 @@
   - name: Install pip
     apt: name="python-pip" state="present"
 
-  - name: Set docker daemon options to switch from devicemapper to overlayfs. Devicemapper is flaaaakyyyy
+  - name: Set docker daemon options to switch from devicemapper to overlayfs. Devicemapper is flaaaakyyyy (understatement)
     copy:
       content: "DOCKER_OPTS=\"-g /data/docker -s overlay\""
       dest: /etc/default/docker
