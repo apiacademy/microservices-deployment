@@ -59,43 +59,22 @@ Demo of Automated Microservices Infrastructure Setup using Ansible, Docker, Cons
 1. Please make sure you set up proper AWS Profile in `group_vars/all.yml` under `aws_profile` variabe and then you can create required servers as easily as running:
 
 ```
-ansible-playbook play-00-create-servers.yml -i hosts
+
 ```
        
 ## Quickstart
 
-To make sure your ssh and hosts setup is correct and you can login to all 
-required servers:
+To create all the servers:
 
 ```console
-ansible all -m ping -i hosts
+AWS_PROFILE=irakli-aws ansible-playbook play-00-create-servers.yml
 ```
 
-To install basic Linux tools (curl, vim etc.) on all servers:
+To run the entire thing:
 
 ```console
-AWS_PROFILE=irakli-aws ansible-playbook -i ec2.py play-baseline.yml
+AWS_PROFILE=irakli-aws ansible-playbook play-all.yml
 ```
-
-To install consul server and clients:
-
-```console
-ansible-playbook bootstrap.yml -i hosts
-```
-
-To install everything, including the sample "hello world" microservice in Node.js:
-
-```console
-ansible-playbook webheads.yml -i hosts
-```
-
-## Consul User Interface
-
-```
-http://<ip-of-a-consul-server>:8500/
-```
-
-Your microservices will be available at: http://microservice-hello.service.consul on any host that points to Consul DNS servers as the DNS.
 
 ## Debugging
 
