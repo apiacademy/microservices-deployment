@@ -1,0 +1,10 @@
+---
+
+# After servers are created we need to wait for them to
+# come online and be SSH-accessible. This may take a little bit of time.
+
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  roles:
+    - wait-for-ssh
