@@ -19,6 +19,18 @@ aws_az: "us-east-1b"
 aws_consul_security_cidr_ip: "0.0.0.0/0"
 #aws_consul_security_cidr_ip: "10.0.0.0/16"
 
+# microservices to install from DockerHub
+
+dockerhub_microservices:
+  - "image" : "theapiacademy/shippinginc-customer-ms"
+    "name"  : "shippinginc-customer-ms"
+    "ports" : "3000"
+  - "image" : "theapiacademy/shippinginc-shipments-ms"
+    "name"  : "shippinginc-shipments-ms"
+    "ports" : "3000"
+
+
+
 # Feel free to edit "exact_count" numbers but editing anything else here may require
 # corresponding changes in the code, which is not advisable. This is not a config file, per se.
 
