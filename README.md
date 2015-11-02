@@ -74,7 +74,7 @@ Demo of Automated Microservices Infrastructure Setup using Ansible, Docker, Cons
 To create all the servers:
 
 ```console
-AWS_PROFILE=irakli-aws ansible-playbook play-00-create-servers.yml
+AWS_PROFILE=irakli-aws ansible-playbook play-010-create-servers.yml
 ```
 
 To run the entire thing:
