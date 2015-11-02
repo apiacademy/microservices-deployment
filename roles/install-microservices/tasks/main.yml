@@ -1,25 +1,14 @@
 ---
 
-  - name: Stop microservice containers if running (Idempotence)
+  - name: Stop/Removes microservice containers if running (Idempotence)
     docker:
       image: "{{item.image}}"
-      state: stopped
+      state: absent
     with_items: dockerhub_microservices
 
   - name: Remove microservice images, if present, to avoid stale versions (Idempotence)
     docker_image: name="{{item.image}}" state=absent
     with_items: dockerhub_microservices
-
-  - name: Launch Registrator Containers
-    docker:
-      name: docker-registrator
-      image: "gliderlabs/registrator"
-      command: "consul://{{ groups.tag_class_consul_servers | first }}:8500"
-      state: started
-      restart_policy: "on-failure"
-      volumes: "/var/run/docker.sock:/tmp/docker.sock"
-
-  #- pause: seconds=5
 
   - name: Launch Microservices
     docker:
@@ -27,5 +16,5 @@
       image: "{{item.image}}"
       state: started
       ports: "{{item.ports}}"
-      restart_policy: "on-failure"
+      # restart_policy: "on-failure"
     with_items: dockerhub_microservices

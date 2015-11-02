@@ -1,0 +1,23 @@
+---
+
+  - pause: seconds=5
+
+  - name: Stop/Removes docker client agent containers if running (Idempotence)
+    docker:
+      image: "gliderlabs/registrator"
+      state: absent
+
+  - name: Launch Registrator Containers
+    docker:
+      name: docker-registrator
+      detach: true
+      net: host
+      env:
+        SERVICE_IGNORE: "consul-agent"
+      image: "gliderlabs/registrator"
+      command: "consul://localhost:8500 -resync 10"
+      #command: "consul://localhost:8500 -ip {{inventory_hostname}} -resync 15"
+      #command: "-ip {{inventory_hostname}} -resync 15"
+      state: started
+      #restart_policy: "on-failure"
+      volumes: "/var/run/docker.sock:/tmp/docker.sock"

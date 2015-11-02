@@ -72,7 +72,7 @@
   - name: Install Docker Compose
     shell: "pip install -U docker-compose"
 
-  - name: Start docker-engine
+  - name: (Re)Start docker-engine services
     service:
       name: docker
       state: restarted

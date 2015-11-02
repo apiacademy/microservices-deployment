@@ -1,5 +1,8 @@
 - include: "play-010-create-servers.yml"
 - include: "play-020-baseline.yml"
 - include: "play-030-dockerize.yml"
+
 - include: "play-040-consul-servers.yml"
 - include: "play-050-microservices.yml"
+- include: "play-060-consul-agents.yml"
+- include: "play-070-launch-registrators.yml"

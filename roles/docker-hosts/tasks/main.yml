@@ -4,3 +4,16 @@
     include: "install-docker.yml"
     tags: 
       - docker
+
+  #- name: Reboot servers to let docker re-init.
+  #  command: /sbin/shutdown -r now
+  #  register: reboot_result
+
+  #- name: Wait for instance to come online (5 minute timeout)
+  #  sudo: false
+  #  local_action:
+  #    module: wait_for
+  #            host={{ inventory_hostname }}
+  #            port=22
+  #            delay=1
+  #            timeout=300

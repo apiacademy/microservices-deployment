@@ -1,15 +1,20 @@
 ---
 
-  #- debug:
-  #    msg: "{{ groups.tag_class_consul_servers | length }}"
+  # Docker container "restarting" is flaky. Remove and start is the bulletproof way
+
+  - name: Stop/Removes docker server containers if running (Idempotence)
+    docker:
+      image: "gliderlabs/consul-server"
+      state: absent
 
   - name: Launch Consul Server Containers
     docker:
       name: consul-server
+      detach: true
       image: "gliderlabs/consul-server"
-      command: "-advertise {{inventory_hostname}} -bootstrap-expect {{ groups.tag_class_consul_servers | length }}"
-      state: reloaded
-      restart_policy: "on-failure"
+      command: "-server -advertise {{inventory_hostname}} -bootstrap-expect {{ groups.tag_class_consul_servers | length }}"
+      state: started
+      # restart_policy: "on-failure"
       ports:
         - 8300:8300
         - 8301:8301
@@ -20,18 +25,7 @@
         - 8500:8500
         - 53:53/udp
 
-  - name: Launch Registrator Containers
-    docker:
-      name: docker-registrator
-      image: "gliderlabs/registrator"
-      command: "consul://{{ groups.tag_class_consul_servers | first }}:8500"
-      state: started
-      restart_policy: "on-failure"
-      volumes: "/var/run/docker.sock:/tmp/docker.sock"
-
-  - pause: seconds=5
-
   - name: Make Consul servers join the cluster
     shell: "docker exec consul-server consul join {{item}}"
     with_items: groups.tag_class_consul_servers
-    when: item != "{{ groups.tag_class_consul_servers | first }}"
+    #when: item != "{{ groups.tag_class_consul_servers | first }}"

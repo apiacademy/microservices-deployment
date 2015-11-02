@@ -1,0 +1,8 @@
+---
+
+- hosts:
+    - tag_class_services_servers
+    - tag_class_gateway_servers
+  sudo: yes
+  roles:
+    - launch-registrators
