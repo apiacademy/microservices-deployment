@@ -14,6 +14,10 @@
       image: "gliderlabs/consul-server"
       command: "-server -advertise {{inventory_hostname}} -bootstrap-expect {{ groups.tag_class_consul_servers | length }}"
       state: started
+      env:
+        # http://gliderlabs.com/registrator/latest/user/services/#detecting-services
+        # https://github.com/gliderlabs/registrator/issues/132
+        SERVICE_IGNORE: always
       # restart_policy: "on-failure"
       ports:
         - 8300:8300

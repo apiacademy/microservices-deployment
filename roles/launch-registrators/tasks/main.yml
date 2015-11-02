@@ -12,8 +12,6 @@
       name: docker-registrator
       detach: true
       net: host
-      env:
-        SERVICE_IGNORE: "consul-agent"
       image: "gliderlabs/registrator"
       command: "consul://localhost:8500 -resync 10"
       #command: "consul://localhost:8500 -ip {{inventory_hostname}} -resync 15"

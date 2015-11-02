@@ -14,7 +14,11 @@
       detach: true
       image: "gliderlabs/consul-agent"
       command: "-advertise {{inventory_hostname}} "
-      state: restarted
+      state: started
+      env:
+        # http://gliderlabs.com/registrator/latest/user/services/#detecting-services
+        # https://github.com/gliderlabs/registrator/issues/132
+        SERVICE_IGNORE: always
       # restart_policy: "on-failure"
       ports:
         - 8300:8300
