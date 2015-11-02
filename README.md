@@ -16,6 +16,7 @@ Demo of Automated Microservices Infrastructure Setup using Ansible, Docker, Cons
 1. Install jq (sed for JSON):
     1. On OS-X you can just run: `brew install jq`
     1. For other platforms consult with [jq installation notes](https://stedolan.github.io/jq/download/)
+3. Install and configure [AWS CLI Tools](http://docs.aws.amazon.com/cli/latest/userguide/installing.html)    
 2. Install and configure Boto:
     1. Installation: http://boto.readthedocs.org/en/latest/getting_started.html
     
