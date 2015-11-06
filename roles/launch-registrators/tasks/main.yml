@@ -13,7 +13,7 @@
       detach: true
       net: host
       image: "gliderlabs/registrator"
-      command: "consul://localhost:8500 -resync 10"
+      command: "-resync 10 -ip {{inventory_hostname}} consul://localhost:8500"
       #command: "consul://localhost:8500 -ip {{inventory_hostname}} -resync 15"
       #command: "-ip {{inventory_hostname}} -resync 15"
       state: started
