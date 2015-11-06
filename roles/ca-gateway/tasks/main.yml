@@ -1,0 +1,29 @@
+---
+
+  - include_vars: "vault.yml"
+
+  #- debug:
+  #    msg: "{{ dockerhub.user }}/{{dockerhub.pwd}} @ {{dockerhub.ca_gateway_uri}}"
+
+  - name: Login to Docker Hub
+    shell: "docker login -u {{ dockerhub.user }} -p {{dockerhub.pwd}} -e irakli+dockerhub@gmail.com"
+
+  - name: Stop/Removes CA Gateway docker image
+    docker:
+      image: "{{dockerhub.ca_gateway_uri}}"
+      state: absent
+
+  - name: Install CA Gateway From Dockerhub
+    docker:
+      name: apigateway
+      detach: true
+      memory_limit: "2024MB"
+      image: "{{dockerhub.ca_gateway_uri}}"
+      state: started
+      ports:
+        - 2124:2124
+        - 8080:8080
+        - 8443:8443
+        - 9443:9443
+
+# 		docker run -d --name="apigateway" --dns="10.0.3.191" --dns="10.0.4.118" --dns="10.0.3.32" -p 2124:2124 -p 8080:8080 -p 8443:8443 -p 9443:9443 -m 2g heinrichbutowatca/ssg:9.0.00-1.consul-test4
