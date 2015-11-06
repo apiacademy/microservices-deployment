@@ -12,7 +12,7 @@
       name: consul-server
       detach: true
       image: "gliderlabs/consul-server"
-      command: "-server -advertise {{inventory_hostname}} -bootstrap-expect {{ groups.tag_class_consul_servers | length }}"
+      command: "-server -advertise {{inventory_hostname}} -bootstrap-expect {{ groups.tag_class_consul_servers | length }} -recursor 8.8.8.8"
       state: started
       env:
         # http://gliderlabs.com/registrator/latest/user/services/#detecting-services
