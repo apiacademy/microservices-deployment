@@ -1,0 +1,15 @@
+---
+
+- hosts:
+    - tag_class_gateway_servers
+    - tag_class_consul_servers
+    - tag_class_services_servers
+  sudo: yes
+  tasks:
+    - name: "stop and remove all running containers"
+      shell: "docker rm -f `docker ps -qa`"
+      ignore_errors: yes
+
+    - name: "stop and remove all docker images"
+      shell: "docker rmi -f `docker images -qa`"
+      ignore_errors: yes

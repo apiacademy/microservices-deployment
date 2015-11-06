@@ -1,4 +1,0 @@
-dockerhub:
-  user: REDACTED
-  pwd: REDACTED
-  ca_gateway_uri: "REDACTED"
