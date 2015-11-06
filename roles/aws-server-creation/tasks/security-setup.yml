@@ -26,6 +26,21 @@
         to_port: 53
         cidr_ip: "0.0.0.0/0"
 
+- name: "{{ project_name }} Microservices Security Group"
+  ec2_group:
+    profile: "{{ aws_profile }}"
+    name: "{{ aws_security_group_services }}"
+    description: "security group for microservices"
+    purge_rules: true
+    region: "{{ aws_region }}"
+    vpc_id: "{{ vpc_settings['vpc_id'] }}"
+    rules:
+      - proto: tcp
+        from_port: 1024
+        to_port: 65000
+        cidr_ip: "0.0.0.0/0"
+
+
 - name: "{{ project_name }} Consul Security Group"
   ec2_group:
     profile: "{{ aws_profile }}"
