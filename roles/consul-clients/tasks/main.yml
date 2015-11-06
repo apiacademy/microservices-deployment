@@ -13,7 +13,8 @@
       name: consul-agent
       detach: true
       image: "gliderlabs/consul-agent"
-      command: "-advertise {{inventory_hostname}} "
+      command: "-advertise {{inventory_hostname}}"
+      #volumes: "/var/run/docker.sock:/var/run/docker.sock"
       state: started
       env:
         # http://gliderlabs.com/registrator/latest/user/services/#detecting-services
