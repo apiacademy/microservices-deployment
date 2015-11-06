@@ -27,7 +27,9 @@
         - 8302:8302/udp
         - 8400:8400
         - 8500:8500
-        - 53:53/udp
+        - 53:8600
+        - 53:8600/udp
+        #- 53:53/udp
 
   - name: Make Consul servers join the cluster
     shell: "docker exec consul-server consul join {{item}}"
