@@ -16,5 +16,13 @@
       image: "{{item.image}}"
       state: started
       ports: "{{item.ports}}"
-      # restart_policy: "on-failure"
+      #restart_policy: "on-failure"
+      env:
+        # http://gliderlabs.com/registrator/latest/user/services/#detecting-services
+        # https://github.com/gliderlabs/registrator/issues/132
+        SERVICE_NAME: "{{item.name}}"
+        SERVICE_TAGS: "microservices"
+        SERVICE_CHECK_HTTP: "/healthcheck"
+        SERVICE_CHECK_INTERVAL: "30s"
+        SERVICE_CHECK_TIMEOUT: "5s"
     with_items: dockerhub_microservices
