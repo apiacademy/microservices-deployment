@@ -5,12 +5,43 @@
   #- debug:
   #    msg: "{{ dockerhub.user }}/{{dockerhub.pwd}} @ {{dockerhub.ca_gateway_uri}}"
 
+  - name: Stop/Removes CA Gateway mySQL docker container
+    docker:
+      image: "mysql:5.5"
+      state: absent
+
+  - set_fact: mysql_host="{{ groups.tag_class_gateway_servers | first }}"
+
+  - debug:
+      msg: " {{mysql_host}}  {{ inventory_hostname }} "
+
+  - name: Install MySQL Container on Gateway1
+    docker:
+      name: gateway-database
+      image: "mysql:5.5"
+      memory_limit: "1024MB"
+      detach: true
+      state: started
+      env:
+        MYSQL_ROOT_PASSWORD: "{{ dockerhub.db_pwd }}"
+        SERVICE_CHECK_SCRIPT: "nc -vz 0.0.0.0 3306 | grep Succeeded"
+        SERVICE_CHECK_INTERVAL: "30s"
+        SERVICE_CHECK_TIMEOUT: "5s"
+      ports:
+        - 3306:3306
+    when: inventory_hostname == "{{ mysql_host }}"
+
   - name: Login to Docker Hub
     shell: "docker login -u {{ dockerhub.user }} -p {{dockerhub.pwd}} -e irakli+dockerhub@gmail.com"
 
-  - name: Stop/Removes CA Gateway docker image
+  - name: Stop/Removes CA Gateway docker container
     docker:
       image: "{{dockerhub.ca_gateway_uri}}"
+      state: absent
+
+  - name: Stop/Removes CA Gateway docker container
+    docker:
+      image: "heinrichbutowatca/ssg:9.0.00-1.consul-test4"
       state: absent
 
   - name: Install CA Gateway From Dockerhub
@@ -25,5 +56,51 @@
         - 8080:8080
         - 8443:8443
         - 9443:9443
+      env:
+        SSG_CLUSTER_HOST: localhost
+        SSG_CLUSTER_PASSWORD: "{{ dockerhub.ssg_pwd }}"
+        SSG_DATABASE_TYPE: mysql
+        SSG_DATABASE_HOST: "{{ mysql_host }}"
+        SSG_DATABASE_PORT: 3306
+        SSG_DATABASE_NAME: ssg
+        SSG_DATABASE_USER: root
+        SSG_DATABASE_PASSWORD: "{{ dockerhub.db_pwd }}"
+        SSG_DATABASE_ADMIN_USER: root
+        SSG_DATABASE_ADMIN_PASS: "{{ dockerhub.db_pwd }}"
+        SSG_ADMIN_USER: pmadmin
+        SSG_ADMIN_PASS: "{{ dockerhub.ssg_pwd }}"
+        SSG_LICENSE: "{{dockerhub.license}}"
+        SSG_INTERNAL_SERVICES: "restman wsman"
+        #SERVICE_2124_IGNORE: always
+        #SERVICE_8443_IGNORE: always
+        #SERVICE_8080_IGNORE: always
+        #SERVICE_9443_NAME: "apigateway"
+        #SERVICE_9443_TAGS: "ca_gateway"
+        #SERVICE_9443_CHECK_SCRIPT: "nc -vz 127.0.0.1 9443 | grep Succeeded"
+        #SERVICE_9443_CHECK_INTERVAL: "30s"
+        #SERVICE_9443_CHECK_TIMEOUT: "5s"
 
 # 		docker run -d --name="apigateway" --dns="10.0.3.191" --dns="10.0.4.118" --dns="10.0.3.32" -p 2124:2124 -p 8080:8080 -p 8443:8443 -p 9443:9443 -m 2g heinrichbutowatca/ssg:9.0.00-1.consul-test4
+
+  ### - name: Create RDS Instance for the gateway
+  ###   rds:
+  ###     command: create
+  ###     instance_name: ssg-database
+  ###     db_engine: MySQL
+  ###     size: 10
+  ###     instance_type: db.m1.small
+  ###     username: root
+  ###     password:
+  ###     tags:
+  ###       cluster: "{{ project_key }}"
+  ###       class: db_servers
+  ###       subnet_tag: "{{ project_key }}_db"
+  ###
+  ### # Get facts about an instance
+  ### - rds:
+  ###     command: facts
+  ###     instance_name: new-database
+  ###     register: new_database_facts
+  ###
+  ### - debug:
+  ###     var: new_database_facts

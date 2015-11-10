@@ -21,12 +21,16 @@
      - cidr: "10.0.3.0/24"
        az: "{{aws_az}}"
        resource_tags: { "Tier":"database", "Name" : "{{ project_name }} DB", "uid" : "{{ project_key }}_db" }
+     - cidr: "10.0.4.0/24"
+       az: "{{aws_az_alt}}"
+       resource_tags: { "Tier":"database", "Name" : "{{ project_name }} DB", "uid" : "{{ project_key }}_db_alt" }
    internet_gateway: True
    route_tables:
      - subnets:
          - "10.0.1.0/24"
          - "10.0.2.0/24"
          - "10.0.3.0/24"
+         - "10.0.4.0/24"
        routes:
          - dest: "0.0.0.0/0"
            gw: igw

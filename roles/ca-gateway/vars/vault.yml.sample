@@ -2,3 +2,8 @@ dockerhub:
   user: REDACTED
   pwd: REDACTED
   ca_gateway_uri: "REDACTED"
+  db_pwd: "REDACTED"
+  ssg_pwd: "REDACTED"
+  license: ""
+  ## License is a very long string, which is basically:
+  ## export SSG_LICENSE="$(cat ~/path/to/CA_LICENSE.xml | gzip | base64)"

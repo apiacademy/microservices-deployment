@@ -40,6 +40,45 @@
         to_port: 65000
         cidr_ip: "0.0.0.0/0"
 
+- name: "{{ project_name }} CA Gateway Security Group"
+  ec2_group:
+    profile: "{{ aws_profile }}"
+    name: "{{ aws_security_group_cagateway }}"
+    description: "security group for CA Gateway"
+    purge_rules: true
+    region: "{{ aws_region }}"
+    vpc_id: "{{ vpc_settings['vpc_id'] }}"
+    rules:
+      - proto: tcp
+        from_port: 8443
+        to_port: 8443
+        cidr_ip: "0.0.0.0/0"
+      - proto: tcp
+        from_port: 8080
+        to_port: 8080
+        cidr_ip: "0.0.0.0/0"
+      - proto: tcp
+        from_port: 9443
+        to_port: 9443
+        cidr_ip: "0.0.0.0/0"
+      - proto: tcp
+        from_port: 2124
+        to_port: 2124
+        cidr_ip: "0.0.0.0/0"
+
+- name: "{{ project_name }} DB Security Group"
+  ec2_group:
+    profile: "{{ aws_profile }}"
+    name: "{{ aws_security_group_db }}"
+    description: "security group for databases"
+    purge_rules: true
+    region: "{{ aws_region }}"
+    vpc_id: "{{ vpc_settings['vpc_id'] }}"
+    rules:
+      - proto: tcp
+        from_port: 3306
+        to_port: 3306
+        cidr_ip: "0.0.0.0/0"
 
 - name: "{{ project_name }} Consul Security Group"
   ec2_group:
