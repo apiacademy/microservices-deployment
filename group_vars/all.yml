@@ -3,21 +3,21 @@
 # name of the AWS profile to use from ~/.aws/credentials
 aws_profile: "ca-irakli-aws"
 
-project_name: "MSA DEMO"
-project_key: "msa_demo" # May NOT contain spaces!
+aws_region: "us-east-1"
+aws_az: "us-east-1b"
+aws_az_alt: "us-east-1c"
+aws_image: ami-d05e75b8 # NoVa: Ubuntu Server 14.04 LTS (HVM), SSD Volume Type
+
+#aws_region: "us-west-1"
+#aws_az: "us-west-1a"
+#aws_az_alt: "us-west-1b"
+#aws_image: "ami-df6a8b9b" # Northern Cali: Ubuntu Server 14.04 LTS (HVM), SSD Volume Type
+
+project_name: "API Academy MSA DEMO"
+project_key: "msa_demo_{{ aws_region }}" # May NOT contain spaces!
 
 key_name: ssh/private-key.pem
 aws_instance_type: m3.medium
-
-#aws_region: "us-east-1"
-#aws_az: "us-east-1b"
-#aws_az_alt: "us-east-1c"
-#aws_image: ami-d05e75b8 # NoVa: Ubuntu Server 14.04 LTS (HVM), SSD Volume Type
-
-aws_region: "us-west-1"
-aws_az: "us-west-1a"
-aws_az_alt: "us-west-1b"
-aws_image: "ami-df6a8b9b" # Northern Cali: Ubuntu Server 14.04 LTS (HVM), SSD Volume Type
 
 aws_security_group_web: "{{ project_key }}_web"
 aws_security_group_consul: "{{ project_key }}_consul"
@@ -30,6 +30,9 @@ aws_ssh_key_name: "{{ project_name }} SSH Keys"
 # This needs to be hardened once we set up VPN
 aws_consul_security_cidr_ip: "0.0.0.0/0"
 #aws_consul_security_cidr_ip: "10.0.0.0/16"
+
+# You definitely want to modify this. Use 'consul keygen' on command line.
+consul_secretkey: "lpzYJ7BNjrLBdqP6nRc9hQ=="
 
 # microservices to install from DockerHub
 # @see: roles/aws-server-creation/security-setup.yml -> {{ project_name }} Microservices Security Group
@@ -60,7 +63,7 @@ server_clusters:
       - "{{ aws_security_group_consul }}"
 
   - zone: "{{ aws_az }}"
-    exact_count: 3
+    exact_count: 1
     assign_public_ip: yes
     tags:
       cluster: "{{ project_key }}"
