@@ -13,7 +13,7 @@
       name: consul-agent
       detach: true
       image: "gliderlabs/consul-agent"
-      command: "-advertise {{inventory_hostname}} -recursor 8.8.8.8"
+      command: "-advertise {{inventory_hostname}} -recursor 8.8.8.8 -dc '{{ aws_region }}' -encrypt '{{consul_secretkey}}'"
       #volumes: "/var/run/docker.sock:/var/run/docker.sock"
       state: started
       env:
