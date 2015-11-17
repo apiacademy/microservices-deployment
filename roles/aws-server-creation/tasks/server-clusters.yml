@@ -68,7 +68,7 @@
       - tagged_instances
 
   - name: Wait for SSH to come up
-    wait_for: host={{ item }} port=22 delay=0 timeout=300 state=started
+    wait_for: host={{ item }} port=22 delay=0 timeout=500 state=started
     with_items: "{{groups.tag_cluster_msa_demo}}"
 
   # - shell: "AWS_PROFILE='{{ aws_profile }}' ./inventory/ec2.py"
