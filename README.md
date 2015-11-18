@@ -2,6 +2,10 @@
 
 Demo of Automated Microservices Infrastructure Setup using Ansible, Docker, Consul and the friends. Demo is tested and uses AWS cloud, but can be adapted for other clouds.
 
+## License
+
+[MIT](LICENSE)
+
 ## Installation
 
 1. Install Ansible
